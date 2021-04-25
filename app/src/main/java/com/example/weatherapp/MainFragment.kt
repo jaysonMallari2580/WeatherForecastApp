@@ -2,6 +2,7 @@ package com.example.weatherapp
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.adapter.HourlyForecastAdapter
 import com.example.weatherapp.databinding.MainFragmentBinding
 import java.time.LocalDate
@@ -19,12 +19,11 @@ import java.time.LocalDate
 class MainFragment : Fragment() {
 
     lateinit var binding: MainFragmentBinding
-    lateinit var adapterH: HourlyForecastAdapter
-    lateinit var recyclerView: RecyclerView
+    private val TAG = "MainFragment"
 
-    private val hourlyForecastAdapter: HourlyForecastAdapter by lazy {
-        HourlyForecastAdapter()
-    }
+    var lat:Double = 0.00
+    var lon:Double = 0.00
+
 
     companion object {
         fun newInstance() = MainFragment()
@@ -37,6 +36,7 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
+    private lateinit var fViewModel: ForeCastViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,15 +49,21 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        var weatherResponseList = viewModel.weatherList
+        fViewModel = ViewModelProvider(this).get(ForeCastViewModel::class.java)
 
-        binding.hourlyWeatherRecyclerview.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = hourlyForecastAdapter
+         fViewModel.forecastList.observe(viewLifecycleOwner, Observer {
+             println("List of HOURLY ${it.toString()}")
 
-            println("This is the list $weatherResponseList")
-        }
+             binding.hourlyWeatherRecyclerview.apply {
+                 layoutManager =
+                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                 adapter =HourlyForecastAdapter(it)
+
+
+             }
+         })
+
+
 
 
         //temp
@@ -98,6 +104,16 @@ class MainFragment : Fragment() {
             var cityName = binding.searchEdittext.editText?.text.toString()
             /*binding.test.text = cityName?.text*/
             viewModel.passMeTheCityName(cityName)
+
+            viewModel.lat.observe(viewLifecycleOwner, Observer {
+               lat = it
+            })
+
+            viewModel.lon.observe(viewLifecycleOwner, Observer {
+                lon = it
+            })
+
+           fViewModel.getForecastByCityname(lat,lon)
 
             val toast =
                 Toast.makeText(context, "You have entered $cityName. . .", Toast.LENGTH_LONG)

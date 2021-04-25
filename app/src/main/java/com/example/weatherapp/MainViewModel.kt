@@ -13,8 +13,14 @@ import io.reactivex.schedulers.Schedulers
 
 class MainViewModel : ViewModel() {
 
+    //lat &lon
+    private var _lat= MutableLiveData<Double>()
+    val lat get() = _lat
 
-    private var _weatherList : List<WeatherResponseDTO> = ArrayList()
+    private var _lon= MutableLiveData<Double>()
+    val lon get() = _lon
+
+    private var _weatherList = MutableLiveData<List<WeatherResponseDTO>>()
     val weatherList get() = _weatherList
 
     private var _weatherResponse = MutableLiveData<WeatherResponseDTO>()
@@ -61,7 +67,10 @@ class MainViewModel : ViewModel() {
 
     private fun onGetWeatherSuccess(weatherResponse: WeatherResponseListDTO) {
 
-        _weatherList = weatherResponse.list.toList()
+        _lat.value = weatherResponse.city?.coord?.lat
+        _lon.value = weatherResponse.city?.coord?.lon
+
+        _weatherList.value = weatherResponse.list
 
         _test.value = weatherResponse.list[0].mainDTO.temp
 

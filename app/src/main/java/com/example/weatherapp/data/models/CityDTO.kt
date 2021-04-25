@@ -7,4 +7,7 @@ data class CityDTO (
     @SerializedName("name")
     val name:String?,
 
+    @SerializedName("coord")
+    val coord: Coord,
+
         )

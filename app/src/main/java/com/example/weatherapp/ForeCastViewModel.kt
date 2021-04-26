@@ -3,6 +3,7 @@ package com.example.weatherapp
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.weatherapp.data.models.Forecast.DailyDTO
 import com.example.weatherapp.data.models.Forecast.ForecastResponseListDTO
 import com.example.weatherapp.data.models.Forecast.HourlyDTO
 import com.example.weatherapp.data.repositories.WeatherRepo
@@ -12,6 +13,8 @@ import io.reactivex.schedulers.Schedulers
 
 class ForeCastViewModel: ViewModel() {
 
+    private var _dailyForecastList = MutableLiveData<List<DailyDTO>>()
+    val dailyForecastList get() = _dailyForecastList
 
     private var _forecastList = MutableLiveData<List<HourlyDTO>>()
     val forecastList get() = _forecastList
@@ -40,8 +43,9 @@ class ForeCastViewModel: ViewModel() {
 
     private fun onGetForecastSuccess(forecastResponse: ForecastResponseListDTO) {
         _forecastList.value = forecastResponse.hourlyList
-        println("HOURLY List: $forecastList")
-        println(forecastList)
+
+        _dailyForecastList.value = forecastResponse.dailyList
+
     }
 
     fun getForecastByCityname(lat:Double,lon: Double){

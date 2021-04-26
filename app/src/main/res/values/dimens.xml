@@ -6,4 +6,8 @@
     <dimen name="margin_left_weather_fragment">20dp</dimen>
     <dimen name="margin_right_weather_fragment">20dp</dimen>
     <dimen name="hourly_margin">10dp</dimen>
+    <dimen name="padding_daily">10dp</dimen>
+    <dimen name="icon_weather_size">30dp</dimen>
+    <dimen name="margin_daily_item">10dp</dimen>
+    <dimen name="icon_daily_margin_right">80dp</dimen>
 </resources>

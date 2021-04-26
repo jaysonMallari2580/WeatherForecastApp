@@ -123,5 +123,17 @@
         tools:listitem="@layout/hourly_weather_item"
         tools:itemCount="10"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/daily_weather_recyclerview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hourly_weather_recyclerview"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/daily_weather_item"
+        tools:itemCount="6"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

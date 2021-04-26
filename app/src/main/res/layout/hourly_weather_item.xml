@@ -19,8 +19,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/hour_icon_iv"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/icon_weather_size"
+        android:layout_height="@dimen/icon_weather_size"
         android:src="@drawable/ic_baseline_cloud_queue_24"
         app:layout_constraintTop_toBottomOf="@id/hour_name_tv"
         app:layout_constraintStart_toStartOf="@id/hour_name_tv"

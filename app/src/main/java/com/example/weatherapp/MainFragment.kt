@@ -12,6 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import com.example.weatherapp.adapter.DailyForecastAdapter
 import com.example.weatherapp.adapter.HourlyForecastAdapter
 import com.example.weatherapp.databinding.MainFragmentBinding
 import java.time.LocalDate
@@ -51,8 +54,8 @@ class MainFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         fViewModel = ViewModelProvider(this).get(ForeCastViewModel::class.java)
 
+        //hourly
          fViewModel.forecastList.observe(viewLifecycleOwner, Observer {
-             println("List of HOURLY ${it.toString()}")
 
              binding.hourlyWeatherRecyclerview.apply {
                  layoutManager =
@@ -63,6 +66,15 @@ class MainFragment : Fragment() {
              }
          })
 
+        //daily
+        fViewModel.dailyForecastList.observe(viewLifecycleOwner, Observer {
+
+            binding.dailyWeatherRecyclerview.apply {
+                layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                adapter =DailyForecastAdapter(it)
+            }
+        })
 
 
 
@@ -88,14 +100,6 @@ class MainFragment : Fragment() {
         viewModel.weatherHint.observe(viewLifecycleOwner, Observer {
             binding.weatherTextview.text = it.toString()
         })
-
-        /*viewModel.icon.observe(viewLifecycleOwner, Observer {
-            var iconCode = it.toString()
-            var iconUrl = "https://openweathermap.org/img/w/$iconCode.png";
-            Glide.with(requireView())
-                .load(iconUrl)
-                .into(binding.weatherIcon)
-        })*/
 
 
         //Search
